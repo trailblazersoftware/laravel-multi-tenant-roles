@@ -1,0 +1,30 @@
+{
+    "name": "trailblazersoftware/multi-tenant",
+    "description": "A Laravel 5.5+ package to help manage multi-tenancy roles and permissions.",
+    "type": "library",
+    "require": {
+        "laravel/laravel": "5.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kolado Sidibe",
+            "email": "ksidibe@yahoo.com"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "Migrations/"
+        ],
+        "psr-4": {
+            "Trailblazer\\MultiTenant\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Trailblazer\\MultiTenant\\MultiTenantServiceProvider"
+            ]
+        }
+    }
+}
