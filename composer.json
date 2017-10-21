@@ -3,7 +3,8 @@
     "description": "A Laravel 5.5+ package to help manage multi-tenancy roles and permissions.",
     "type": "library",
     "require": {
-        "laravel/laravel": "5.5"
+        "php": ">=7.0.0",
+        "laravel/framework": "5.5.*"
     },
     "license": "MIT",
     "authors": [
