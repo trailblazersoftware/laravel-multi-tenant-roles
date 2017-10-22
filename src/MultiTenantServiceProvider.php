@@ -15,7 +15,7 @@ class MultiTenantServiceProvider extends ServiceProvider
     {
         // Publish config files
         $this->publishes([
-            __DIR__.'/config/config.php' => app()->basePath() . '/config/MultiTenant.php',
+            __DIR__.'/Config/Config.php' => app()->basePath() . '/config/MultiTenant.php',
         ]);
         // Register commands
         if ($this->app->runningInConsole())
