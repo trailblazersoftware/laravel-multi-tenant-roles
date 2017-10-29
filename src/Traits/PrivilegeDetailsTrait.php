@@ -1,5 +1,7 @@
 <?php
 namespace Trailblazer\MultiTenant\Traits;
+use config;
+use Log;
 /**
  * Trait implementing the query scope for limiting results to only records belonging a to a particular tenant.
  */
@@ -60,8 +62,9 @@ trait PrivilegeDetailsTrait
      */
     public function description($lang = null)
     {
-        $lang ?? Config::get('local', 'en');
-        return ($this->allDescriptions())->lang($lang);
+        $lang = empty($lang) ? config('app.locale') : $lang;
+        Log::info('Local' . $lang);
+        return $this->allDescriptions()->where('lang', $lang);
     }
 
     /**
@@ -84,8 +87,8 @@ trait PrivilegeDetailsTrait
      */
     public function displayName($lang = null)
     {
-        $lang ?? Config::get('local', 'en');
-        return ($this->allDisplayNames())->lang($lang);
+        $lang = empty($lang) ? config('app.locale') : $lang;
+        return $this->allDisplayNames()->where('lang', $lang);
     }
     
     /**

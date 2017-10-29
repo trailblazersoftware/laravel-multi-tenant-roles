@@ -19,7 +19,7 @@ trait UserTrait
      * If any of the given roles is matched, true is returned.
      * You may optionally pass false as the second parameter to indicate that you want the user to have all the roles.
      *
-     * @param string|array $roles The role(s) to match against.
+     * @param string|array $roles The role(s) to match against. Pass '*' to check if the user has any role at all.
      * @param boolean $requireAll Optional parameter to indicate that user should have all the roles. Default is false..
      * @return boolean True if the user matches the role(s) requirement.
      */
@@ -30,24 +30,50 @@ trait UserTrait
         {
             return false;
         }
+        if(in_array('*', $roles))
+        {
+            return $this->roles($tenantId)->count() > 0;
+        }
         if($requireAll)
         {
             return $this->roles($tenantId)->whereIn('name', $roles)->count() == count($roles);
         }
         return $this->roles($tenantId)->whereIn('name', $roles)->count() > 0;
     }
+
+    /**
+     * Roles on specific Tenant.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function rolesOnTenant(int $tenantId)
+    {
+        $tenantId ?? Config::get('multitenant.tenant_id');
+        return $this->roles()->forTenant($tenantId);
+    }
+    /**
+     * Checks to see if the user has any role o
+     *
+     * @param int $tenantId
+     * @return boolean
+     */
+    public function hasAnyRole(int $tenantId)
+    {
+        return $this->hasRoles('*', false, $tenantId);
+    }
     /**
      * Many-to-Many relations with Role.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles($tenantId = null)
+    public function roles()
     {
-        if(empty($tenantId))
+        $currentTenant = Config::get('multitenant.current_tenant');
+        if(empty($currentTenant))
         {
-            return $this->belongsToMany(Config::get('multitenant.role'), Config::get('multitenant.role_user_table'))->whereNull(Config::get('multitenant.role_user_table') . '.tenant_id');
+            return $this->belongsToMany(Config::get('multitenant.role'), Config::get('multitenant.role_user_table'));
         }
-        return $this->belongsToMany(Config::get('multitenant.role'), Config::get('multitenant.role_user_table'))->where(Config::get('multitenant.role_user_table') . '.tenant_id', $tenantId);
+        return $this->belongsToMany(Config::get('multitenant.role'), Config::get('multitenant.role_user_table'))->wherePivot('tenant_id', $currentTenant);
     }
 
 

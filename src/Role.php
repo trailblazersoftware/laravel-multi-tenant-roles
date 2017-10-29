@@ -20,6 +20,30 @@ class Role extends Model  implements IRole
         parent::__construct($attributes);
         $this->table = Config::get('multitenant.roles_table');
     }
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::with(['details']);
+    }
+    // /**
+    //  * The "booting" method of the model.
+    //  *
+    //  * @return void
+    //  */
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::addGlobalScope('description', function (Builder $builder) {
+    //         $builder->where('key', 'description');
+    //     });
+    // }
 
     /**
      * Many-to-Many relations to user model.

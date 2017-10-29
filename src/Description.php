@@ -42,4 +42,8 @@ class Description extends PrivilegeDetail
     {
         $this->attributes['key'] = 'description';
     }
+    public function owner()
+    {
+        return $this->morphTo();
+    }
 }
