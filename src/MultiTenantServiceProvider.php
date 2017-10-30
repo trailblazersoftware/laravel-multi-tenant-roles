@@ -15,7 +15,7 @@ class MultiTenantServiceProvider extends ServiceProvider
     {
         // Publish config files
         $this->publishes([
-            __DIR__.'/Config/Config.php' => app()->basePath() . '/config/MultiTenant.php',
+            __DIR__.'/Config/config.php' => app()->basePath() . '/config/MultiTenant.php',
         ]);
         // Register commands
         if ($this->app->runningInConsole())
@@ -38,7 +38,7 @@ class MultiTenantServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/config/config.php', 'multitenant'
+            __DIR__.'/Config/config.php', 'multitenant'
         );
         $this->app->bind('multitenant', function($app){
             
