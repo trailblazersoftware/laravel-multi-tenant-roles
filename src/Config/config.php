@@ -1,7 +1,6 @@
 <?php
 /**
- * This file is part of Entrust,
- * a role & permission management solution for Laravel.
+ * A role & permission management solution for Laravel.
  *
  * @author Kolado Sidibe <kolado.sidibe@olympuscloud.com>
  * @author Trailblazer Software <support@olympuscloud.com>

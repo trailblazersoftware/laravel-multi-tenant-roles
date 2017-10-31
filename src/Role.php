@@ -5,45 +5,29 @@ namespace Trailblazer\MultiTenant;
 use Config;
 use Trailblazer\MultiTenant\Contracts\IRole;
 use Illuminate\Database\Eloquent\Model;
-use Trailblazer\MultiTenant\Traits\PrivilegeDetailsTrait;
 use Trailblazer\MultiTenant\Traits\TenantScopeTrait;
+use Trailblazer\MultiTenant\Traits\GetLocalizedColumnTrait;
 
 class Role extends Model  implements IRole
 {
-    use PrivilegeDetailsTrait, TenantScopeTrait;
+    use TenantScopeTrait, GetLocalizedColumnTrait;
     protected $table;
     protected $fillable = [
-        'name'
+        'name',
+        'display_name',
+        'display_name_fr',
+        'description',
+        'description_fr',
+    ];
+    protected $appends = [
+        'localized_display_name',
+        'localized_description',
     ];
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         $this->table = Config::get('multitenant.roles_table');
     }
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::with(['details']);
-    }
-    // /**
-    //  * The "booting" method of the model.
-    //  *
-    //  * @return void
-    //  */
-    // protected static function boot()
-    // {
-    //     parent::boot();
-
-    //     static::addGlobalScope('description', function (Builder $builder) {
-    //         $builder->where('key', 'description');
-    //     });
-    // }
 
     /**
      * Many-to-Many relations to user model.

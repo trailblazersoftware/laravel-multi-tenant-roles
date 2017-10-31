@@ -18,6 +18,10 @@ class MultiTenantPrivilegesTablesSetup extends Migration
         Schema::create(Config::get('multitenant.roles_table'), function (Blueprint $table) {
             $table->bigincrements('id');
             $table->string('name')->unique();
+            $table->string('display_name');
+            $table->string('display_name_fr');
+            $table->string('description');
+            $table->string('description_fr');
             $table->bigInteger('tenant_id', false, true )->nullable();
             $table->timestamps();
         });
@@ -25,6 +29,10 @@ class MultiTenantPrivilegesTablesSetup extends Migration
         Schema::create(Config::get('multitenant.permissions_table'), function (Blueprint $table) {
             $table->bigincrements('id');
             $table->string('name')->unique();
+            $table->string('display_name');
+            $table->string('display_name_fr');
+            $table->string('description');
+            $table->string('description_fr');
             $table->bigInteger('tenant_id', false, true )->nullable();
             $table->timestamps();
         });
@@ -94,15 +102,15 @@ class MultiTenantPrivilegesTablesSetup extends Migration
             $table->primary(['user_id', 'role_id', 'tenant_id']);
         });
 
-        // privilege_details table to store Things like display_name and description for roles and permissions.
-        Schema::create(Config::get('multitenant.privilege_details_table'), function (Blueprint $table) {
-            $table->bigincrements('id');
-            $table->string('owner_type', 500);
-            $table->bigInteger('owner_id', false, true );
-            $table->string('lang', 10);
-            $table->string('key');
-            $table->string('value');
-        });
+        // // privilege_details table to store Things like display_name and description for roles and permissions.
+        // Schema::create(Config::get('multitenant.privilege_details_table'), function (Blueprint $table) {
+        //     $table->bigincrements('id');
+        //     $table->string('owner_type', 500);
+        //     $table->bigInteger('owner_id', false, true );
+        //     $table->string('lang', 10);
+        //     $table->string('key');
+        //     $table->string('value');
+        // });
 
         DB::commit();
     }

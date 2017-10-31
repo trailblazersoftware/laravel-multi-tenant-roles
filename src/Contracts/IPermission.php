@@ -12,6 +12,25 @@ namespace Trailblazer\MultiTenant\Contracts;
 interface IPermission
 {
     /**
+     * Accessor method to get the localized display_name.
+     * 
+     * The language returned is that set in config('locale)
+     *
+     * @param string|null $value
+     * @return string
+     */
+    public function getLocalizedDisplayNameAttribute($value);
+    
+    /**
+     * Accessor method to get the localized description.
+     * 
+     * The language returned is that set in config('locale)
+     *
+     * @param string|null $value
+     * @return string
+     */
+    public function getLocalizedDescriptionAttribute($value);
+    /**
      * Many-to-Many relations user model.
      * 
      * All the users with the given permission.
@@ -19,57 +38,6 @@ interface IPermission
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users();
-
-    /**
-     * All the PrivilegeDetail models that belong to this permission.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function details();
-
-    /**
-     * The description (PrivilegeDetail where key==description) that belong to this permission in the given language.
-     * 
-     * If the $lang param is not provided, the method will use the application's current language code from Config
-     *
-     * @param string $lang the 2 char language code for the description we want to retrieve. i.e. en, fr, es.
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany Description models
-     */
-    public function description($lang = null);
-
-    /**
-     * All the descriptions (PrivilegeDetail where key==description) that belong to this permission.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany Description models
-     */
-    public function allDescriptions();
-
-    /**
-     * The display name (PrivilegeDetail where key==display_name) that belong to this permission in the given language.
-     * 
-     * If the $lang param is not provided, the method will use the application's current language code from Config
-     *
-     * @param string $lang the 2 char language code for the display name we want to retrieve. i.e. en, fr, es.
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany Description models
-     */
-    public function displayName($lang = null);
-    
-    /**
-     * All the descriptions (PrivilegeDetail where key==description) that belong to this permission.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany Description models
-     */
-    public function allDisplayNames();
-
-
-    /**
-     * The description of this permission.
-     *
-     * @param mixed $value
-     * @return string The description of this permission.
-     */
-    public function getDescriptionAttribute($value);
-    
     /**
      * The roles to whom this permission is bound.
      * 

@@ -68,12 +68,7 @@ trait UserTrait
      */
     public function roles()
     {
-        $currentTenant = Config::get('multitenant.current_tenant');
-        if(empty($currentTenant))
-        {
-            return $this->belongsToMany(Config::get('multitenant.role'), Config::get('multitenant.role_user_table'));
-        }
-        return $this->belongsToMany(Config::get('multitenant.role'), Config::get('multitenant.role_user_table'))->wherePivot('tenant_id', $currentTenant);
+        return $this->belongsToMany(Config::get('multitenant.role'), Config::get('multitenant.role_user_table'))->withPivot('tenant_id');
     }
 
 
