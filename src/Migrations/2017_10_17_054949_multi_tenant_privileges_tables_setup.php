@@ -19,9 +19,9 @@ class MultiTenantPrivilegesTablesSetup extends Migration
             $table->bigincrements('id');
             $table->string('name')->unique();
             $table->string('display_name');
-            $table->string('display_name_fr');
+            $table->string('display_name_fr')->nullable();
             $table->string('description');
-            $table->string('description_fr');
+            $table->string('description_fr')->nullable();
             $table->bigInteger('tenant_id', false, true )->nullable();
             $table->timestamps();
         });
@@ -30,9 +30,9 @@ class MultiTenantPrivilegesTablesSetup extends Migration
             $table->bigincrements('id');
             $table->string('name')->unique();
             $table->string('display_name');
-            $table->string('display_name_fr');
+            $table->string('display_name_fr')->nullable();
             $table->string('description');
-            $table->string('description_fr');
+            $table->string('description_fr')->nullable();
             $table->bigInteger('tenant_id', false, true )->nullable();
             $table->timestamps();
         });
