@@ -86,13 +86,12 @@ interface IRole
     public function detachPermissions($permissions);
 
     /**
-     * Query scope to limit the roles returned to a specific tenant, and optionally global roles.
+     * Query scope to limit the roles returned to those the user has on a specific tenant.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param int|array $tenantFilter If an int is provided, used as tenant_id. If an array is provided
-     * then it should be in the form ['tenant_id' => 101, 'include_global' => true|false]
+     * @param int $tenantId The ID of the tenant
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeForTenant($query, $tenantFilter);
+    public function scopeForTenant($query, $tenantId);
 }

@@ -20,25 +20,25 @@ trait UserTrait
      * You may optionally pass false as the second parameter to indicate that you want the user to have all the roles.
      *
      * @param string|array $roles The role(s) to match against. Pass '*' to check if the user has any role at all.
-     * @param boolean $requireAll Optional parameter to indicate that user should have all the roles. Default is false..
      * @return boolean True if the user matches the role(s) requirement.
      */
-    public function hasRoles($roles, $requireAll = false, $tenantId)
+    public function hasRoles($roles, $tenantId = null)
     {
         $roles = (array)$roles;
         if(empty($roles))
         {
             return false;
         }
+        $query = $this->roles();
+        if(!empty($tenantId))
+        {
+            $query = $query->forTenant($tenantId);
+        }
         if(in_array('*', $roles))
         {
-            return $this->roles($tenantId)->count() > 0;
+            return $query->count() > 0;
         }
-        if($requireAll)
-        {
-            return $this->roles($tenantId)->whereIn('name', $roles)->count() == count($roles);
-        }
-        return $this->roles($tenantId)->whereIn('name', $roles)->count() > 0;
+        return $query->whereIn('name', $roles)->count() > 0;
     }
 
     /**

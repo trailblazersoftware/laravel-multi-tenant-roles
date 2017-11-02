@@ -48,13 +48,12 @@ interface IPermission
     public function roles();
 
     /**
-     * Query scope to limit the permissions returned to a specific tenant, and optionally global permissions.
+     * Query scope to limit the permissions returned to a specific tenant.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param int|array $tenantFilter If an int is provided, used as tenant_id. If an array is provided
-     * then it should be in the form ['tenant_id' => 101, 'include_global' => true|false]
+     * @param int $tenantFilter id of the tenant to check user role on.
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeForTenant($query, $tenantFilter);
+    public function scopeForTenant($query, $tenantId);
 }

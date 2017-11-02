@@ -5,12 +5,11 @@ namespace Trailblazer\MultiTenant;
 use Config;
 use Trailblazer\MultiTenant\Contracts\IRole;
 use Illuminate\Database\Eloquent\Model;
-use Trailblazer\MultiTenant\Traits\TenantScopeTrait;
 use Trailblazer\MultiTenant\Traits\GetLocalizedColumnTrait;
 
 class Role extends Model  implements IRole
 {
-    use TenantScopeTrait, GetLocalizedColumnTrait;
+    use GetLocalizedColumnTrait;
     protected $table;
     protected $fillable = [
         'name',
@@ -125,5 +124,22 @@ class Role extends Model  implements IRole
         foreach($permissions as $aPermission) {
             $this->detachPermission($aPermission);
         }
+    }
+
+    /**
+     * Query scope to limit the roles returned to those the user holds on a specific tenant's space.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $tenantFilter id of the tenant to check user role on.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeForTenant($query, $tenantId)
+    {
+        if(empty($tenantId))
+        {
+            return $query;
+        }
+        return $query->where(Config::get('multitenant.role_user_table') . '.tenant_id', $tenantId);
     }
 }
