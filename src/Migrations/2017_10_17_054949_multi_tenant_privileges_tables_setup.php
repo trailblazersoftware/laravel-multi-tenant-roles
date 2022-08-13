@@ -1,7 +1,8 @@
-<?php 
+<?php
+
 //namespace Trailblazer\MultiTenant;
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class MultiTenantPrivilegesTablesSetup extends Migration
 {
@@ -12,7 +13,6 @@ class MultiTenantPrivilegesTablesSetup extends Migration
      */
     public function up()
     {
-        DB::beginTransaction();
 
         // roles table
         Schema::create(Config::get('multitenant.roles_table'), function (Blueprint $table) {
@@ -22,7 +22,7 @@ class MultiTenantPrivilegesTablesSetup extends Migration
             $table->string('display_name_fr')->nullable();
             $table->string('description');
             $table->string('description_fr')->nullable();
-            $table->bigInteger('tenant_id', false, true )->nullable();
+            $table->bigInteger('tenant_id', false, true)->nullable();
             $table->timestamps();
         });
         // permissions table
@@ -33,71 +33,69 @@ class MultiTenantPrivilegesTablesSetup extends Migration
             $table->string('display_name_fr')->nullable();
             $table->string('description');
             $table->string('description_fr')->nullable();
-            $table->bigInteger('tenant_id', false, true )->nullable();
+            $table->bigInteger('tenant_id', false, true)->nullable();
             $table->timestamps();
         });
 
         // permission_role table  to store role permissions(Many-to-Many)
         Schema::create(Config::get('multitenant.permission_role_table'), function (Blueprint $table) {
-            $table->bigInteger('role_id', false, true )->nullable();
-            $table->bigInteger('permission_id', false, true )->nullable();
-            $table->bigInteger('tenant_id', false, true )->nullable();
-
+            $table->bigInteger('role_id', false, true)->nullable();
+            $table->bigInteger('permission_id', false, true)->nullable();
+            $table->bigInteger('tenant_id', false, true)->nullable();
 
             $table->foreign('role_id')
-            ->references('id')
-            ->on(Config::get('multitenant.roles_table'))
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+        ->references('id')
+        ->on(Config::get('multitenant.roles_table'))
+        ->onUpdate('cascade')
+        ->onDelete('cascade');
 
             $table->foreign('permission_id')
-            ->references('id')
-            ->on(Config::get('multitenant.permissions_table'))
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+        ->references('id')
+        ->on(Config::get('multitenant.permissions_table'))
+        ->onUpdate('cascade')
+        ->onDelete('cascade');
 
             $table->primary(['permission_id', 'role_id', 'tenant_id']);
         });
 
         // permission_user table  to store role permissions(Many-to-Many)
         Schema::create(Config::get('multitenant.permission_user_table'), function (Blueprint $table) {
-            $table->bigInteger('user_id', false, true )->nullable();
-            $table->bigInteger('permission_id', false, true )->nullable();
-            $table->bigInteger('tenant_id', false, true )->nullable();
-
+            $table->bigInteger('user_id', false, true)->nullable();
+            $table->bigInteger('permission_id', false, true)->nullable();
+            $table->bigInteger('tenant_id', false, true)->nullable();
 
             $table->foreign('user_id')
-            ->references('id')
-            ->on(Config::get('multitenant.users_table'))
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+        ->references('id')
+        ->on(Config::get('multitenant.users_table'))
+        ->onUpdate('cascade')
+        ->onDelete('cascade');
 
             $table->foreign('permission_id')
-            ->references('id')
-            ->on(Config::get('multitenant.permissions_table'))
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+        ->references('id')
+        ->on(Config::get('multitenant.permissions_table'))
+        ->onUpdate('cascade')
+        ->onDelete('cascade');
 
             $table->primary(['user_id', 'permission_id', 'tenant_id']);
         });
 
         // role_user table to store user roles (Many-to-Many)
         Schema::create(Config::get('multitenant.role_user_table'), function (Blueprint $table) {
-            $table->bigInteger('user_id', false, true )->nullable();
-            $table->bigInteger('role_id', false, true )->nullable();
-            $table->bigInteger('tenant_id', false, true )->nullable();
+            $table->bigInteger('user_id', false, true)->nullable();
+            $table->bigInteger('role_id', false, true)->nullable();
+            $table->bigInteger('tenant_id', false, true)->nullable();
 
             $table->foreign('user_id')
-            ->references(Config::get('multitenant.user_key'))
-            ->on(Config::get('multitenant.users_table'))
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+        ->references(Config::get('multitenant.user_key'))
+        ->on(Config::get('multitenant.users_table'))
+        ->onUpdate('cascade')
+        ->onDelete('cascade');
 
             $table->foreign('role_id')
-            ->references('id')
-            ->on(Config::get('multitenant.roles_table'))
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+        ->references('id')
+        ->on(Config::get('multitenant.roles_table'))
+        ->onUpdate('cascade')
+        ->onDelete('cascade');
 
             $table->primary(['user_id', 'role_id', 'tenant_id']);
         });
@@ -111,8 +109,6 @@ class MultiTenantPrivilegesTablesSetup extends Migration
         //     $table->string('key');
         //     $table->string('value');
         // });
-
-        DB::commit();
     }
 
     /**
